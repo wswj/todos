@@ -1,17 +1,45 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <TodoHeader :addTodo="addTodo" />
+    <MyList :todos="todos" :deleteItem="deleteItem"/>
+    <TodoBottom />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TodoHeader from './components/TodoHeader.vue';
+import TodoBottom from './components/TodoBottom.vue';
+import MyList from './components/MyList.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    TodoHeader,
+    TodoBottom,
+    MyList
+  },
+  data() {
+    return {
+      todos:[]
+    };
+  },
+  methods:{
+    addTodo(newTodo){
+      if(newTodo.trim() !== ''){
+        this.todos.push(newTodo);
+      }
+    },
+    deleteItem(id){
+      this.todos = this.todos.filter(todo => todo.id !== id);
+    },
+    doneItem(id){
+      this.todos = this.todos.map(todo => {
+        if(todo.id === id){
+          todo.done = !todo.done;
+        }
+        return todo;
+      });
+    }
   }
 }
 </script>
